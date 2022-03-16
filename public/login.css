@@ -1,0 +1,114 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+}
+
+.header {
+    width: 100%;
+    height: 100px;
+    padding: 0 5% 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #fff;
+}
+
+.logoName {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 55px;
+    color: #fff;
+}
+
+.blog {
+    width: 100%;
+    height: auto;
+    margin: 100px 0 0 0;
+    display: flex;
+    justify-content: center;
+}
+
+.authContainer {
+    width: 88%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.auth {
+    width: 800px;
+    height: 400px;
+    padding: 20px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: 1px solid #fff;
+    border-radius: 15px;
+}
+
+.loginContainer {
+    width: 50%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.login {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    color: #fff;
+}
+
+.loginInput {
+    height: 50px;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    text-decoration: none;
+    color: #000;
+}
+
+.passwordContainer {
+    width: 50%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.password {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    color: #fff;
+}
+
+.passwordInput {
+    height: 50px;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    text-decoration: none;
+    color: #000;
+}
+
+.loginButton {
+    width: 20%;
+    height: 50px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    text-decoration: none;
+    background-color: rgb(37, 153, 56);
+    color: #fff;
+}

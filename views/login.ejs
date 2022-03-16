@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css" type="text/css">
+    <title>Login | Welbex</title>
+</head>
+<body>
+    <header class="header">
+        <h1 class="logoName">Welbex</h1>
+    </header>
+    <div id="login">
+        <div class="blog">
+            <form action="/login" method="post" class="authContainer">
+                <div class="auth">
+                    <div class="loginContainer">
+                        <h3 class="login">login</h3>
+                        <input class="loginInput" name="user_name" required>
+                    </div>
+                    <div class="passwordContainer">
+                        <h3 class="password">password</h3>
+                        <input class="passwordInput" name="password" required>
+                    </div>
+                    <button class="loginButton" type="submit" formaction="/login">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
