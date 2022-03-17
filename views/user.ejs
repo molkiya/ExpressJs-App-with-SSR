@@ -4,24 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./user.css" type="text/css">
+    <link rel="stylesheet" href="user.css" type="text/css">
     <title>All blogs | Welbex</title>
 </head>
 <body>
-    <header class="header">
-        <h1 class="logoName">Welbex</h1>
-        <div class="blockHeaderUser">
-            <p class="nameUser">Name User</p>
-            <button class="buttonAuth">Выйти</button>
-        </div>
-    </header>
+    
+    <%- include("./partials/headerLog.ejs"); %>
+
     <div>
         <div class="blog">
             <div class="posts">
                 <div class="addPost">
+                    <h1 class="addNewPostHeader">Новый пост</h1>
                     <div class="textPost">
-                        
+                        <textarea type="text" class="addNewPostText" maxlength="300" id="newPostAdd"></textarea>
                     </div>
+                    <p style="font-size: 15px; color: #fff" >Загрузите видео или фото</p>
+                    <input type="file" accept="image/*,video/*" id="addFile">
                 </div>
                 <div class="allPosts">
                     
@@ -29,5 +28,6 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </body>
 </html>

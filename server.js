@@ -1,19 +1,21 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const path = require('path');
 const partials = require('express-partials');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
-const crypto = require('crypto');
-const configSession = require('./data/data');
-const routes = require('./routes/routes');
-const logout = require('express-passport-logout');
+
+const {configSession, connection} = require('./data/data');
+const { genPassword, isAuth, isAdmin, userExists } = require('./passport');
+
 const app = express();
 
-app.use(configSession);
+// port
 
-// app.use
+const port = process.env.PORT || 2022;
+
+// app.config
+
+app.use(configSession);
 app.use(partials())
 app.use(passport.initialize());
 app.use(passport.session());
@@ -23,108 +25,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
 
-const connection = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    database: "users",
-    multipleStatements: true
-});
-
-connection.connect((err) => {
-    if (err) throw err;
-
-    console.log('Connected to MYSQL');
-})
-
-const customFields = {
-    usernameField: 'user_name',
-    passwordField: 'password',
-}
-
-const verifyCallback = (login, password, done) => {
-    connection.query(`SELECT * FROM users WHERE login = ?`, [login], (err, result, fields) => {
-        if (err) throw err;
-
-        if (result.length == 0) {
-            return done(null, false)
-        }
-
-        const isValid = validPassword(password, result[0].hash, result[0].salt);
-        
-        let user = {
-            id: result[0].id,
-            login: result[0].login,
-            hash: result[0].hash,
-            salt: result[0].salt
-        }
-
-        if (isValid) {
-            return done(null, user)
-        } else {
-            return done(null, false)
-        }
-    });
-};
-
-passport.use(new LocalStrategy(customFields, verifyCallback));
-
-
-passport.serializeUser((user, done) => {
-    console.log("inside serializer" + user.id);
-    done(null, user.id);
-})
-
-passport.deserializeUser((userId, done) => {
-    console.log("deserializedUser" + userId);
-    connection.query('SELECT * FROM users where id = ?', [userId], (err, result) => {
-        done(null, result[0])
-    })
-})
-
-const validPassword = (password, hash, salt) => {
-    let hashVarify = crypto.pbkdf2Sync(password, salt, 10000, 60, 'sha512').toString('hex');
-    return hash === hashVarify;
-}
-
-const genPassword = (password) => {
-    let salt = crypto.randomBytes(32).toString('hex');
-    let genhash = crypto.pbkdf2Sync(password, salt, 10000, 60, 'sha512').toString('hex');
-    return {
-        salt,
-        hash: genhash
-    }
-}
-
-const isAuth = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect('/notAuthorized');
-    }
-}
-
-const isAdmin = (req, res, next) => {
-    if (req.isAuthenticated() && req.user.isAdmin === 1) {
-        next();
-    } else {
-        res.redirect('/notAuthorizedAdmin');
-    }
-}
-
-const userExists = (req, res, next) => {
-    connection.query("SELECT * FROM users WHERE login=?", [req.body.user_name], (err, result, fields) => {
-        if (err) throw err;
-
-        if (result.length>0) {
-            res.redirect('/userAlreadyExists')
-        } else {
-            next()
-        }
-    })
-}
+// routes
 
 app.get('/', (req, res, next) => {
-    res.render('main')
+    if (req.isAuthenticated()) {
+        res.render(path.join(__dirname, '/views/logged/main.ejs'))
+    } else {
+        res.render(path.join(__dirname, '/views/unlogged/main.ejs'))
+    }
 })
 
 app.get('/login', (req, res, next) => {
@@ -141,8 +49,8 @@ app.get('/logout', (req, res, next) => {
     res.redirect('/');
 })
 
-app.get('/login-success', (req, res, next) => {
-    res.send('<p>You successfully logged in <a href="/protected-route">Go to protected route</a></p>')
+app.get('/user', (req, res, next) => {
+    res.render('user')
 })
 
 app.get('/login-failure', (req, res, next) => {
@@ -174,15 +82,7 @@ app.post('/register', userExists, (req, res, next) => {
     res.redirect('/login');
 })
 
-app.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/login-success'}));
-
-app.get('/protected-route', isAuth, (req, res, next) => {
-    res.send('<h1>You authenticated</h1><p><a href="/logout">Logout and reload</a></p>')
-})
-
-app.get('/admin-route', isAdmin, (req, res, next) => {
-    res.send('<h1>You are admin</h1><p><a href="/logout">Logout and reload</a></p>')
-})
+app.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/user'}))
 
 app.get('/notAuthorized', (req, res, next) => {
     console.log('Inside get');
@@ -199,9 +99,16 @@ app.get('/userAlreadyExists', (req, res, next) => {
     res.send('<h1>Sorry this username is already taken<p><a href="/register">Register again</a></p></h1>')
 })
 
+// notifications about work server
 
-app.listen(2022, (err) => {
+connection.connect((err) => {
     if (err) throw err;
 
-    console.log(`Server is running on 2022`)
+    console.log('Connected to MYSQL');
+})
+
+app.listen(port, (err) => {
+    if (err) throw err;
+
+    console.log(`Server is running on ${port}`)
 })

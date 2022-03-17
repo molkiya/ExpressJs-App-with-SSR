@@ -1,4 +1,5 @@
 const session = require("express-session");
+const mysql = require('mysql');
 const MySQLStore = require('express-mysql-session')(session);
 
 
@@ -18,4 +19,11 @@ const configSession = session({
     }
 })
 
-module.exports = configSession;
+const connection = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    database: "users",
+    multipleStatements: true
+});
+
+module.exports = {configSession, connection};
