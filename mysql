@@ -1,0 +1,8 @@
+CREATE TABLE posts ( 
+    id INT NOT NULL AUTO_INCREMENT, 
+    time VARCHAR(10) NOT NULL, 
+    login VARCHAR(20) NOT NULL, 
+    text VARCHAR(300) NOT NULL, 
+    media BLOB(), 
+    PRIMARY KEY (id) 
+);

@@ -14,14 +14,15 @@
     <div>
         <div class="blog">
             <div class="posts">
-                <div class="addPost">
+                <form action="postMyPost" method="post" class="addPost">
                     <h1 class="addNewPostHeader">Новый пост</h1>
                     <div class="textPost">
-                        <textarea type="text" class="addNewPostText" maxlength="300" id="newPostAdd"></textarea>
+                        <textarea type="text" class="addNewPostText" name="textNewPost" maxlength="300" id="newPostAdd"></textarea>
                     </div>
                     <p style="font-size: 15px; color: #fff" >Загрузите видео или фото</p>
                     <input type="file" accept="image/*,video/*" id="addFile">
-                </div>
+                    <button type="submit"><a style="text-decoration: none;">Опубликовать</a></button>
+                </form>
                 <div class="allPosts">
                     
                 </div>

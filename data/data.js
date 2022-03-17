@@ -1,5 +1,6 @@
 const session = require("express-session");
 const mysql = require('mysql');
+const path = require('path');
 const MySQLStore = require('express-mysql-session')(session);
 
 
@@ -26,4 +27,23 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
-module.exports = {configSession, connection};
+const connectionBlog = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    database: "posts",
+    multipleStatements: true
+})
+
+connection.connect((err) => {
+    if (err) throw err;
+
+    console.log(`Connected to MYSQL DB USERS`);
+})
+
+connectionBlog.connect((err) => {
+    if (err) throw err;
+
+    console.log(`Connected to MYSQL DB POSTS`);
+})
+
+module.exports = {configSession, connection, connectionBlog};
