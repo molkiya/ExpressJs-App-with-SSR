@@ -4,7 +4,6 @@ const path = require('path');
 const partials = require('express-partials');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const ejs = require('ejs')
 
 const routes = require('./routes/routes.js');
 const {configSession} = require('./data/data');

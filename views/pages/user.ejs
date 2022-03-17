@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="user.css" type="text/css">
+    <title>All blogs | Welbex</title>
+</head>
+<body>
+    
+    <%- include("../partials/headerLog.ejs"); %>
+
+    <div>
+        <div class="blog">
+            <div class="posts">
+                <form action="postMyPost" method="post" class="addPost">
+                    <h1 class="addNewPostHeader">Новый пост</h1>
+                    <div class="textPost">
+                        <textarea type="text" class="addNewPostText" name="textNewPost" maxlength="300" id="newPostAdd" required></textarea>
+                    </div>
+                    <div class="containerUnderText">
+                        <div class="inputContainer">
+                            <p style="font-size: 15px; color: #fff;" >Загрузите видео или фото</p>
+                            <input type="file" accept="image/*,video/*" id="addFile">
+                        </div>
+                        <button type="submit" class="publishBtn"><a style="text-decoration: none;">Опубликовать</a></button>    
+                    </div>
+                </form>
+                <div class="allPosts">
+                    <h1 class="postsHeader">Мои посты</h1>
+                    <% result.map(post => { %>
+                        <div class="post">
+                            <div class="blockDateName">
+                                <h2 class="datePost"><%= post.time %></h2>
+                                <h2 class="namePost"><%= post.login %></h2>
+                            </div>
+                            <p class="textPostMine"><%= post.text %></p>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

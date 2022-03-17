@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <title>All blogs | Welbex</title>
+</head>
+<body>
+    
+    <% if (auth) { %>
+        <%- include("../partials/headerLog.ejs"); %>
+    <% } else { %>
+        <%-  include("../partials/header.ejs"); %>
+    <% }; %>
+
+    <div>
+        <div class="blog">
+            <h1 class="postsHeader">Все посты</h1>
+            <div class="postsContainer">
+                <% result.map(post => { %>
+                    <div class="post">
+                        <div class="blockDateName">
+                            <h2 class="datePost"><%= post.time %></h2>
+                            <h2 class="namePost"><%= post.login %></h2>
+                        </div>
+                        <p class="textPost"><%= post.text %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

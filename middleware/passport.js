@@ -1,5 +1,5 @@
 const passport = require('passport');
-const { connection } = require('./data/data')
+const { connection } = require('../data/data');
 const crypto = require('crypto');
 const LocalStrategy = require('passport-local').Strategy;
 

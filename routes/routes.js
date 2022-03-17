@@ -5,24 +5,34 @@ const routes = Routes();
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 
-const { genPassword, userExists } = require('../passport');
+const { genPassword, userExists } = require('../middleware/passport');
 const { connection, connectionBlog } = require('../data/data');
 
 // routes
 
 routes.get('/', (req, res, next) => {
+
+    let auth = false;
+
     if (req.isAuthenticated()) {
-        res.render(path.join(__dirname, '../views/logged/main.ejs'))
-    } else {
-        res.render(path.join(__dirname, '../views/unlogged/main.ejs'))
+        auth = true;
     }
+
+    connectionBlog.query('SELECT * FROM posts', (err, result) => {
+        if (err) throw new Error(err.message)
+
+        res.render(path.join("../views/pages/main.ejs"), {
+            result: result,
+            auth: auth
+        })
+    })
 })
 
 routes.get('/login', (req, res, next) => {
     if (req.isAuthenticated()) {
         res.redirect('/')
     } else {
-        res.render('login')
+        res.render('../views/pages/login.ejs')
     }
 })
 
@@ -33,7 +43,17 @@ routes.get('/logout', (req, res, next) => {
 })
 
 routes.get('/user', (req, res, next) => {
-    res.render('user')
+
+    const login = req.user.login;
+
+    connectionBlog.query('SELECT * FROM posts WHERE login=?', [login], (err, result) => {
+        if (err) throw new Error(err.message)
+
+        res.render(path.join(__dirname, '../views/pages/user.ejs'), {
+            result: result
+        })
+        
+    })
 })
 
 routes.get('/login-failure', (req, res, next) => {
@@ -44,7 +64,7 @@ routes.get('/register', (req, res, next) => {
     if (req.isAuthenticated()) {
         res.redirect('/')
     } else {
-        res.render('register')
+        res.render('../views/pages/register.ejs')
     }
 })
 

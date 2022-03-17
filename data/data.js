@@ -8,8 +8,8 @@ const configSession = session({
     key: 'session_cookie_name',
     secret: 'session_cookie_secret',
     store: new MySQLStore({
-        host: '127.0.0.1',
-        port: 3306,
+        host: process.env.host,
+        port: process.env.port,
         user: 'root',
         database: 'cookie_users'
     }),
@@ -21,14 +21,16 @@ const configSession = session({
 })
 
 const connection = mysql.createConnection({
-    host: "127.0.0.1",
+    host: process.env.host,
+    port: process.env.port,
     user: "root",
     database: "users",
     multipleStatements: true
 });
 
 const connectionBlog = mysql.createConnection({
-    host: "127.0.0.1",
+    host: process.env.host,
+    port: process.env.port,
     user: "root",
     database: "posts",
     multipleStatements: true
