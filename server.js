@@ -7,7 +7,7 @@ const cors = require('cors');
 
 const multerConfig = require('./middleware/multer.js');
 const routes = require('./routes/routes.js');
-const {configSession} = require('./data/data');
+const { configSession } = require('./data/data');
 
 const app = express();
 

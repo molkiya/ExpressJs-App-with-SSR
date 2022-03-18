@@ -39,13 +39,17 @@ const connectionBlog = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
 
-    console.log(`Connected to MYSQL DB USERS`);
+    const time = new Date()
+
+    console.log(`Connected to MYSQL DB USERS from ${time}`);
 })
 
 connectionBlog.connect((err) => {
     if (err) throw err;
 
-    console.log(`Connected to MYSQL DB POSTS`);
+    const time = new Date()
+
+    console.log(`Connected to MYSQL DB POSTS from ${time}`);
 })
 
 module.exports = {configSession, connection, connectionBlog};

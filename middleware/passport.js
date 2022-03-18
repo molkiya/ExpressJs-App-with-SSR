@@ -36,12 +36,10 @@ const verifyCallback = (login, password, done) => {
 passport.use(new LocalStrategy(customFields, verifyCallback));
 
 passport.serializeUser((user, done) => {
-    console.log("inside serializer" + user.id);
     done(null, user.id);
 })
 
 passport.deserializeUser((userId, done) => {
-    console.log("deserializedUser" + userId);
     connection.query('SELECT * FROM users where id = ?', [userId], (err, result) => {
         done(null, result[0])
     })

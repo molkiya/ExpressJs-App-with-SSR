@@ -1,6 +1,11 @@
 const { connectionBlog } = require("../data/data");
 
 exports.postMyPostController = (req, res, next) => {
+
+    if (!req.isAuthenticated()) {
+        res.redirect('/')
+    }
+
     let options = {
         year: 'numeric',
         month: 'numeric',

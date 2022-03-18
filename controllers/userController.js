@@ -1,4 +1,11 @@
+const { connectionBlog } = require("../data/data");
+const path = require('path')
+
 exports.userController = (req, res, next) => {
+
+    if (!req.isAuthenticated()) {
+        res.redirect('/')
+    }
 
     const login = req.user.login;
 

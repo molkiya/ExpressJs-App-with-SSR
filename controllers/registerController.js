@@ -1,4 +1,4 @@
-const { genPassword, userExists } = require('../middleware/passport');
+const { genPassword } = require('../middleware/passport');
 const { connection } = require('../data/data');
 
 exports.registerController = (req, res, next) => {
