@@ -5,6 +5,7 @@ const partials = require('express-partials');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const multerConfig = require('./middleware/multer.js');
 const routes = require('./routes/routes.js');
 const {configSession} = require('./data/data');
 
@@ -23,6 +24,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multerConfig);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
