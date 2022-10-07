@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  express_js:
+    container_name: express_js
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - password__db=password
+      - host__db=mysqldb
+      - user__db=user
+      - port__db=3306
+    volumes:
+      - .:/src
+    depends_on:
+      - mysqldb
+    networks:
+      - default-net
+  mysqldb:
+    image: arm64v8/mysql:oracle
+    container_name: mysqldb
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '127.0.0.1:3306:3306'
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/cookie_users.sql:/docker-entrypoint-initdb.d/cookie_users.sql
+      - ./sql/posts.sql:/docker-entrypoint-initdb.d/posts.sql
+      - ./sql/users.sql:/docker-entrypoint-initdb.d/users.sql
+      - my-db:/var/lib/mysql
+    networks:
+      - default-net
+
+volumes:
+  my-db:
+
+networks:
+  default-net:
+    driver: bridge

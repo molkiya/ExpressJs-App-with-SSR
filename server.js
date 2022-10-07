@@ -1,27 +1,27 @@
-const passport = require('passport');
-const express = require('express');
-const path = require('path');
-const partials = require('express-partials');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import passport from "passport"
+import express from "express"
+import * as path from "path";
+import { fileURLToPath } from "url"
+import partials from "express-partials"
+import bodyParser from "body-parser";
+import cors from "cors"
 
-const multerConfig = require('./middleware/multer.js');
-const routes = require('./routes/routes.js');
-const { configSession } = require('./data/data');
+import multerConfig from "./middleware/multer.utils.js"
+import routes from "./routes.js"
+import { configSession } from "./data/mysql.data.js"
 
 const app = express();
 
-// port
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const port = process.env.PORT || 2022;
-
-// app.config
+const port = process.env.PORT || 3000;
 
 app.use(configSession);
 app.use(partials());
 app.use(cors());
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session({}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multerConfig);
@@ -29,12 +29,8 @@ app.use(multerConfig);
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
 
-// notifications about work server
-
 app.use(routes);
 
-app.listen(port, (err) => {
-    if (err) throw err;
-
+app.listen(port, () => {
     console.log(`Server is running on ${port}`)
 })

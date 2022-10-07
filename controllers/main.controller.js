@@ -1,15 +1,12 @@
-const path = require('path')
-const { connectionBlog } = require('../data/data');
+import * as path from "path";
+import { connectionBlog } from "../data/mysql.data.js";
 
-exports.mainController = (req, res, next) => {
-
+export const mainController = async (req, res) => {
     let auth = false;
-
     if (req.isAuthenticated()) {
         auth = true;
     }
-
-    connectionBlog.query('SELECT * FROM posts', (err, result) => {
+    await connectionBlog.query('SELECT * FROM posts', (err, result) => {
         if (err) throw err;
 
         res.render(path.join("../views/pages/main.ejs"), {

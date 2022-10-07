@@ -1,14 +1,9 @@
-const multer = require('multer');
-const path = require('path')
+import multer from "multer"
+import * as path from "path";
 
 const storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, './public/media');
-    },
-    filename: function (req, file, callback) {
-        let filename = req.user.login + '-' + (Math.random()*100000) + path.extname(file.originalname)
-        callback(null, filename);
-    },
+    destination: (req, file, callback) => callback(null, './public/media'),
+    filename: (req, file, callback) => callback(null, req.user.login + '-' + (Math.random()*100000) + path.extname(file.originalname))
 })
 
 const fileFilter = (req, file, callback) => {
@@ -24,4 +19,4 @@ const fileFilter = (req, file, callback) => {
 
 const multerConfig = multer({ storage: storage, fileFilter: fileFilter }).single('filedata')
 
-module.exports = multerConfig;
+export default multerConfig
